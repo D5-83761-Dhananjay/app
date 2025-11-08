@@ -14,7 +14,10 @@ export default function ChatBar({ onClose }) {
   }, [messages]);
 
   const addBotMessage = (text, options = null, fileUpload = false) => {
-    setMessages((prev) => [...prev, { sender: "bot", text, options, fileUpload }]);
+    setMessages((prev) => [
+      ...prev,
+      { sender: "bot", text, options, fileUpload },
+    ]);
   };
 
   const addUserMessage = (text) => {
@@ -80,22 +83,42 @@ export default function ChatBar({ onClose }) {
         const nextDoc = uploadedDocs + 1;
         setUploadedDocs(nextDoc);
         if (nextDoc === 1) {
-          addBotMessage("✅ Got your CFA enrollment proof.\nPlease upload your ABC Number certificate next.", null, true);
+          addBotMessage(
+            "✅ Got your CFA enrollment proof.\nPlease upload your ABC Number certificate next.",
+            null,
+            true
+          );
         } else if (nextDoc === 2) {
-          addBotMessage("✅ ABC Number received.\nFinally, upload your academic marksheets (10th, 12th, UG & PG).", null, true);
+          addBotMessage(
+            "✅ ABC Number received.\nFinally, upload your academic marksheets (10th, 12th, UG & PG).",
+            null,
+            true
+          );
         } else if (nextDoc === 3) {
-          addBotMessage("✅ All documents received successfully.\nVerifying your details...");
+          addBotMessage(
+            "✅ All documents received successfully.\nVerifying your details..."
+          );
           setTimeout(() => handleNextStep("cfa_all_docs_uploaded"), 1500);
         }
       } else if (flowType === "wedding" && step === 3) {
         const nextDoc = uploadedDocs + 1;
         setUploadedDocs(nextDoc);
         if (nextDoc === 1) {
-          addBotMessage("✅ Got your 3 months’ salary slips.\nPlease upload your 6 months’ bank statement next.", null, true);
+          addBotMessage(
+            "✅ Got your 3 months’ salary slips.\nPlease upload your 6 months’ bank statement next.",
+            null,
+            true
+          );
         } else if (nextDoc === 2) {
-          addBotMessage("✅ Bank statement received.\nFinally, upload your PAN and Aadhaar card.", null, true);
+          addBotMessage(
+            "✅ Bank statement received.\nFinally, upload your PAN and Aadhaar card.",
+            null,
+            true
+          );
         } else if (nextDoc === 3) {
-          addBotMessage("✅ All required documents received successfully.\nVerifying your profile...");
+          addBotMessage(
+            "✅ All required documents received successfully.\nVerifying your profile..."
+          );
           setTimeout(() => handleNextStep("wedding_all_docs_uploaded"), 1500);
         }
       }
@@ -109,10 +132,14 @@ export default function ChatBar({ onClose }) {
       switch (step) {
         case 1:
           if (inputValue === "yes") {
-            addBotMessage("Excellent! Please share your PAN card number for verification 😊");
+            addBotMessage(
+              "Excellent! Please share your PAN card number for verification 😊"
+            );
             setStep(2);
           } else {
-            addBotMessage("That’s perfectly fine! Welcome aboard. 😊\nPlease share:\n1️⃣ Monthly income\n2️⃣ Employment type (salaried/self-employed)\n3️⃣ Any existing EMIs or loans");
+            addBotMessage(
+              "That’s perfectly fine! Welcome aboard. 😊\nPlease share:\n1️⃣ Monthly income\n2️⃣ Employment type (salaried/self-employed)\n3️⃣ Any existing EMIs or loans"
+            );
             setStep(8);
           }
           break;
@@ -131,7 +158,9 @@ export default function ChatBar({ onClose }) {
 
         case 3:
           if (inputValue === "yes") {
-            addBotMessage("Great! Please mention the approximate amount you require for your CFA course (e.g. ₹2,00,000)");
+            addBotMessage(
+              "Great! Please mention the approximate amount you require for your CFA course (e.g. ₹2,00,000)"
+            );
             setStep(4);
           } else {
             addBotMessage("Sure! You can reach out anytime 😊");
@@ -141,7 +170,8 @@ export default function ChatBar({ onClose }) {
 
         case 4: {
           const amt = parseInt(inputValue.replace(/[^0-9]/g, ""));
-          if (isNaN(amt)) return addBotMessage("Please enter a valid amount like ₹2,00,000");
+          if (isNaN(amt))
+            return addBotMessage("Please enter a valid amount like ₹2,00,000");
           setLoanAmount(amt);
           addBotMessage(
             `Thank you! Based on your relationship, ₹${amt.toLocaleString()} is within your eligible range.\nPlease choose your loan tenure:`,
@@ -190,10 +220,13 @@ export default function ChatBar({ onClose }) {
 
         case 7:
           if (inputValue === "cfa_all_docs_uploaded") {
-            addBotMessage("✅ Documents verified successfully.\nYour loan of ₹2,00,000 is approved in principle.\nWould you like to proceed to final sanction?", [
-              { label: "✅ Yes, confirm", value: "yes" },
-              { label: "❌ No", value: "no" },
-            ]);
+            addBotMessage(
+              "✅ Documents verified successfully.\nYour loan of ₹2,00,000 is approved in principle.\nWould you like to proceed to final sanction?",
+              [
+                { label: "✅ Yes, confirm", value: "yes" },
+                { label: "❌ No", value: "no" },
+              ]
+            );
             setStep(9);
           }
           break;
@@ -231,10 +264,14 @@ export default function ChatBar({ onClose }) {
       switch (step) {
         case 1:
           if (inputValue === "yes") {
-            addBotMessage("Great! Please share your PAN card number for verification.");
+            addBotMessage(
+              "Great! Please share your PAN card number for verification."
+            );
             setStep(2);
           } else {
-            addBotMessage("That’s perfectly fine! Welcome aboard. 😊\nTo check eligibility, please share:\n1️⃣ Monthly income\n2️⃣ Employment type (salaried/self-employed)\n3️⃣ Any existing EMIs or loans");
+            addBotMessage(
+              "That’s perfectly fine! Welcome aboard. 😊\nTo check eligibility, please share:\n1️⃣ Monthly income\n2️⃣ Employment type (salaried/self-employed)\n3️⃣ Any existing EMIs or loans"
+            );
             setStep(2);
           }
           break;
@@ -296,17 +333,39 @@ export default function ChatBar({ onClose }) {
   };
 
   return (
-    <div className="fixed right-4 bottom-4 w-[95%] md:w-[380px] h-[95vh] bg-white shadow-2xl rounded-2xl border flex flex-col overflow-hidden z-50">
+    <div
+      className="
+      fixed 
+      right-2 bottom-2 
+      md:right-6 md:bottom-6 
+      w-[95%] max-w-[420px] 
+      h-[80vh] md:h-[90vh] 
+      bg-white 
+      shadow-2xl 
+      rounded-2xl 
+      border 
+      flex flex-col 
+      overflow-hidden 
+      z-50
+    "
+    >
+      {" "}
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
         <h2 className="text-lg font-semibold">Personal Loan Assistant</h2>
-        <button onClick={onClose} className="text-white text-xl font-bold">×</button>
+        <button onClick={onClose} className="text-white text-xl font-bold">
+          ×
+        </button>
       </div>
-
       {/* Chat window */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4 bg-gray-50">
         {messages.map((msg, i) => (
-          <div key={i} className={`flex flex-col ${msg.sender === "user" ? "items-end" : "items-start"}`}>
+          <div
+            key={i}
+            className={`flex flex-col ${
+              msg.sender === "user" ? "items-end" : "items-start"
+            }`}
+          >
             <div
               className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm whitespace-pre-line ${
                 msg.sender === "user"
@@ -350,9 +409,11 @@ export default function ChatBar({ onClose }) {
         ))}
         <div ref={chatEndRef} />
       </div>
-
       {/* Input */}
-      <form onSubmit={handleUserSubmit} className="p-3 border-t bg-white flex items-center gap-2">
+      <form
+        onSubmit={handleUserSubmit}
+        className="p-3 border-t bg-white flex items-center gap-2"
+      >
         <input
           type="text"
           placeholder="Type your message..."
@@ -360,7 +421,10 @@ export default function ChatBar({ onClose }) {
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-full">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-full"
+        >
           Send
         </button>
       </form>
